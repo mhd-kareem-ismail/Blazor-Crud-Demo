@@ -1,12 +1,15 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">CrudDemo</a>
+        <label title="Navigation menu" class="navbar-toggler" for="nav-toggle">
+            <span class="navbar-toggler-icon"></span>
+        </label>
     </div>
 </div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+<input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" style="display: none;" />
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+<div class="nav-scrollable" onclick="document.getElementById('nav-toggle').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
@@ -26,7 +29,7 @@
             </NavLink>
         </div>
 
-        
+
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="products">
                 <span class="bi bi-box-seam-fill" aria-hidden="true"></span> Products
@@ -34,3 +37,37 @@
         </div>
     </nav>
 </div>
+
+<style>
+    /* Mobile styles to show/hide NavMenu and add overlay */
+    @@media (max-width: 640.98px) {
+        .navbar-toggler {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 0.25rem 0.75rem;
+            cursor: pointer;
+            margin-right: 0.5rem;
+        }
+
+        .nav-scrollable {
+            display: none;
+        }
+
+        .nav-toggle-checkbox:checked ~ .nav-scrollable {
+            display: block;
+            position: absolute;
+            top: 3.5rem; /* Sits right under top-row */
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+            background-color: #052767;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+    }
+</style>

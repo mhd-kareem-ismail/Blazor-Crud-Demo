@@ -65,7 +65,7 @@
         </div>
 
         <div class="col-12 col-lg-8">
-            <!-- Desktop Table View -->
+            <!-- Desktop View: Data Table -->
             <div class="card border-0 shadow-sm rounded-3 overflow-hidden d-none d-lg-block">
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -122,11 +122,11 @@
                 </div>
             </div>
 
-            <!-- Mobile Card View (md and down) -->
+            <!-- Mobile View: Cards -->
             <div class="d-block d-lg-none">
                 @if (products.Count == 0)
                 {
-                    <div class="card border-0 shadow-sm rounded-3 text-center py-5">
+                    <div class="text-center py-5 text-muted bg-white border-0 rounded-3 shadow-sm">
                         <div class="mb-2 fs-4">📦</div>
                         <p class="mb-0 fw-medium">No products found.</p>
                         <small class="text-black-50">Create one using the form to get started.</small>
@@ -138,20 +138,24 @@
                         @foreach (var product in products)
                         {
                             <div class="card border-0 shadow-sm rounded-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <small class="text-muted font-monospace">#ID: @product.Id</small>
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <span class="text-muted small">#@product.Id</span>
+                                            <h6 class="fw-bold mb-0 mt-1" style="color: #1f2937;">@product.Name</h6>
+                                        </div>
+                                        <h6 class="fw-bold mb-0 px-2 py-1 bg-light rounded shadow-sm text-dark">@product.Price.ToString("C")</h6>
+                                    </div>
+                                    <div class="mb-4">
                                         <span class="badge @(product.Quantity < 10 ? "bg-warning text-dark" : "bg-light text-dark") border rounded-pill">
                                             Qty: @product.Quantity
                                         </span>
                                     </div>
-                                    <h5 class="fw-bold mb-1" style="color: #1f2937;">@product.Name</h5>
-                                    <div class="text-muted mb-3 fs-5">@product.Price.ToString("C")</div>
-                                    <div class="d-flex gap-2 mt-2">
-                                        <button class="btn w-50 shadow-sm fw-medium" style="background-color: #4f46e5; color: white; border: none; padding: 0.5rem;" @onclick="() => EditProduct(product)">
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-sm w-50 fw-bold shadow-sm" style="background-color: #4f46e5; color: white; border: none; padding: 0.6rem;" @onclick="() => EditProduct(product)">
                                             Edit
                                         </button>
-                                        <button class="btn w-50 shadow-sm fw-medium" style="background-color: #ef4444; color: white; border: none; padding: 0.5rem;" @onclick="() => DeleteProduct(product.Id)">
+                                        <button class="btn btn-sm w-50 fw-bold shadow-sm" style="background-color: #ef4444; color: white; border: none; padding: 0.6rem;" @onclick="() => DeleteProduct(product.Id)">
                                             Delete
                                         </button>
                                     </div>
