@@ -1,0 +1,237 @@
+@page "/products"
+@rendermode InteractiveServer
+@using CrudDemo.Models
+
+<PageTitle>Product Management - Dashboard</PageTitle>
+
+<!-- Minimal Top Header -->
+<div class="px-4 py-3 mb-4 bg-white border-bottom shadow-sm d-flex align-items-center justify-content-between" style="border-radius: 0 0 8px 8px;">
+    <div>
+        <h4 class="mb-0 text-dark fw-bold" style="color: #1f2937;">Product Overview</h4>
+        <small class="text-muted">Manage your inventory catalog</small>
+    </div>
+    <div>
+        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill shadow-sm">
+            Total Items: @products.Sum(p => p.Quantity)
+        </span>
+    </div>
+</div>
+
+<div class="container-fluid px-4 mb-5">
+    <div class="row g-4">
+        <!-- Left Column: Form Card (4 Cols on desktop) -->
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0 px-4">
+                    <h5 class="fw-bold mb-0" style="color: #374151;">
+                        <i class="bi @(isEditing ? "bi-pencil-square" : "bi-plus-circle") me-2 text-muted"></i>
+                        @(isEditing ? "Edit Product" : "Add New Product")
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <EditForm Model="currentProduct" OnValidSubmit="HandleValidSubmit" FormName="ProductForm">
+                        <DataAnnotationsValidator />
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label small fw-bold text-muted text-uppercase tracking-wide">Product Name</label>
+                            <InputText id="name" class="form-control form-control-lg bg-light border-0 fs-6" placeholder="e.g. Minimalist Desk" @bind-Value="currentProduct.Name" />
+                            <ValidationMessage For="@(() => currentProduct.Name)" class="text-danger small mt-1" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="price" class="form-label small fw-bold text-muted text-uppercase tracking-wide">Unit Price ($)</label>
+                            <InputNumber id="price" class="form-control form-control-lg bg-light border-0 fs-6" placeholder="0.00" @bind-Value="currentProduct.Price" />
+                            <ValidationMessage For="@(() => currentProduct.Price)" class="text-danger small mt-1" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="quantity" class="form-label small fw-bold text-muted text-uppercase tracking-wide">Stock Quantity</label>
+                            <InputNumber id="quantity" class="form-control form-control-lg bg-light border-0 fs-6" placeholder="0" @bind-Value="currentProduct.Quantity" />
+                            <ValidationMessage For="@(() => currentProduct.Quantity)" class="text-danger small mt-1" />
+                        </div>
+
+                        <div class="d-flex gap-2 mt-2">
+                            <button type="submit" class="btn w-100 fw-bold shadow-sm" style="background-color: #10b981; color: white; border: none; padding: 0.75rem;">
+                                @(isEditing ? "Save Changes" : "Create Product")
+                            </button>
+                            @if (isEditing)
+                            {
+                                <button type="button" class="btn btn-light w-50 fw-bold text-muted border-0 shadow-sm" style="padding: 0.75rem;" @onclick="CancelEdit">
+                                    Cancel
+                                </button>
+                            }
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Data Table (8 Cols on desktop) -->
+        <div class="col-12 col-lg-8">
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-borderless align-middle mb-0">
+                            <thead style="background-color: #f3f4f6; color: #4b5563;">
+                                <tr>
+                                    <th class="ps-4 py-3 font-monospace small">#ID</th>
+                                    <th class="py-3 small fw-bold text-uppercase">Name</th>
+                                    <th class="py-3 small fw-bold text-uppercase">Price</th>
+                                    <th class="py-3 small fw-bold text-uppercase">Qty</th>
+                                    <th class="pe-4 py-3 small fw-bold text-uppercase text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="border-top">
+                                @if (products.Count == 0)
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5 text-muted">
+                                            <div class="mb-2 fs-4">??</div>
+                                            <p class="mb-0 fw-medium">No products found.</p>
+                                            <small class="text-black-50">Create one using the form to get started.</small>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var product in products)
+                                    {
+                                        <tr class="border-bottom" style="border-color: #f3f4f6 !important;">
+                                            <td class="ps-4 py-3 text-muted">@product.Id</td>
+                                            <td class="py-3 fw-medium" style="color: #1f2937;">@product.Name</td>
+                                            <td class="py-3 text-muted">@product.Price.ToString("C")</td>
+                                            <td class="py-3">
+                                                <span class="badge @(product.Quantity < 10 ? "bg-warning text-dark" : "bg-light text-dark") border rounded-pill">
+                                                    @product.Quantity
+                                                </span>
+                                            </td>
+                                            <td class="pe-4 py-3 text-end">
+                                                <div class="d-inline-flex gap-2">
+                                                    <button class="btn btn-sm shadow-sm" style="background-color: #4f46e5; color: white; border: none; padding: 0.35rem 0.75rem;" @onclick="() => EditProduct(product)">
+                                                        Edit
+                                                    </button>
+                                                    <button class="btn btn-sm shadow-sm" style="background-color: #ef4444; color: white; border: none; padding: 0.35rem 0.75rem;" @onclick="() => DeleteProduct(product.Id)">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    // --- State Variables ---
+
+    // Creates an In-Memory static list acting as our pseudo-database
+    private static List<Product> products = new List<Product>
+    {
+        new Product { Id = 1, Name = "Laptop", Price = 999.99m, Quantity = 10 },
+        new Product { Id = 2, Name = "Wireless Mouse", Price = 25.50m, Quantity = 50 },
+        new Product { Id = 3, Name = "Mechanical Keyboard", Price = 120.00m, Quantity = 20 }
+    };
+
+    // Bound to the form inputs for creating/updating
+    private Product currentProduct = new Product();
+
+    // Tracks if we are currently updating an existing product
+    private bool isEditing = false;
+
+    // Auto-increment ID simulation
+    private int nextId = 4;
+
+    // --- Event Handlers & Methods ---
+
+    /// <summary>
+    /// Triggered when the EditForm successfully validates.
+    /// Handles both Create and Update operations.
+    /// </summary>
+    private void HandleValidSubmit()
+    {
+        if (isEditing)
+        {
+            // Find the product in our fake database and update its properties
+            var existingProduct = products.FirstOrDefault(p => p.Id == currentProduct.Id);
+            if (existingProduct != null)
+            {
+                existingProduct.Name = currentProduct.Name;
+                existingProduct.Price = currentProduct.Price;
+                existingProduct.Quantity = currentProduct.Quantity;
+            }
+        }
+        else
+        {
+            // Simulate database auto-increment Id
+            currentProduct.Id = nextId++;
+            // Add to our list
+            products.Add(new Product
+            {
+                Id = currentProduct.Id,
+                Name = currentProduct.Name,
+                Price = currentProduct.Price,
+                Quantity = currentProduct.Quantity
+            });
+        }
+
+        // Reset the form back to a clean state
+        ResetForm();
+    }
+
+    /// <summary>
+    /// Loads an existing product into the form for editing.
+    /// </summary>
+    private void EditProduct(Product product)
+    {
+        // Copy the properties to avoid modifying the list directly before saving
+        currentProduct = new Product
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Price = product.Price,
+            Quantity = product.Quantity
+        };
+        isEditing = true;
+    }
+
+    /// <summary>
+    /// Removes a product from our in-memory list by Id
+    /// </summary>
+    private void DeleteProduct(int id)
+    {
+        var productToRemove = products.FirstOrDefault(p => p.Id == id);
+        if (productToRemove != null)
+        {
+            products.Remove(productToRemove);
+
+            // If the deleted product is currently being edited, reset the form
+            if (isEditing && currentProduct.Id == id)
+            {
+                ResetForm();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Cancels the current edit operation and clears the form
+    /// </summary>
+    private void CancelEdit()
+    {
+        ResetForm();
+    }
+
+    /// <summary>
+    /// Helper method to reset our state variables and clear the EditForm
+    /// </summary>
+    private void ResetForm()
+    {
+        currentProduct = new Product();
+        isEditing = false;
+    }
+}

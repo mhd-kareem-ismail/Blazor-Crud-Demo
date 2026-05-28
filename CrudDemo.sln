@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37314.3 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudDemo", "CrudDemo\CrudDemo\CrudDemo.csproj", "{E60CA28B-AB81-4BCF-AEAD-61BAD79486F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudDemo.Client", "CrudDemo\CrudDemo.Client\CrudDemo.Client.csproj", "{61DEE873-A855-4DBB-ABB6-2F32D3E16DD6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E60CA28B-AB81-4BCF-AEAD-61BAD79486F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E60CA28B-AB81-4BCF-AEAD-61BAD79486F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E60CA28B-AB81-4BCF-AEAD-61BAD79486F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E60CA28B-AB81-4BCF-AEAD-61BAD79486F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61DEE873-A855-4DBB-ABB6-2F32D3E16DD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61DEE873-A855-4DBB-ABB6-2F32D3E16DD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61DEE873-A855-4DBB-ABB6-2F32D3E16DD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61DEE873-A855-4DBB-ABB6-2F32D3E16DD6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {013EA3A4-6332-4E6D-AE77-F202ECA52A34}
+	EndGlobalSection
+EndGlobal
